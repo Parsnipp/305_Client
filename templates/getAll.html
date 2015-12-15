@@ -1,7 +1,7 @@
 <h2>All Saved Recipes</h2>
-<p>
-  <a href="#getItem">get</a></br>
-  <a href="#post">post</a></br>
-  <a href="#put">put</a></br>
-	<a href="#delete">delete</a>
-</p>
+
+<table>
+  <tr ng-repeat="recipe in recipes">
+    <td>{{recipe.name}}</td><td>{{recipe.ingredients}}</td><td><a href="#getItem/{{book.id}}">view</a></td>
+  </tr>
+</table>

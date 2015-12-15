@@ -4,11 +4,12 @@
 */
 
 var recipeApp = angular.module('recipeApp', ['ngRoute']);
-var user = angular.module('headerApp', ['ngRoute']);
+//var user = angular.module('headerApp', ['ngRoute']);
 
 recipeApp.config( ['$routeProvider', ($routeProvider) => {
   $routeProvider
   	.when('/getAll', {
+      //console.log('getpage');
   		templateUrl: 'templates/getAll.html',
   		controller: 'getAllController'
   	})
@@ -58,7 +59,15 @@ recipeApp.config( ['$routeProvider', ($routeProvider) => {
 }]);
 
 recipeApp.controller('getAllController', ($scope, $http) => {
-
+  $http({
+    method: 'GET',
+    url: 'http://localhost:8080/'
+  }).then(function successCallback(response) {
+      console.log(response.data.data);
+      $scope.recipes = response.data.data;
+    }, function errorCallback(response) {
+      console.log(response);
+    });
 });
 
 recipeApp.controller('getItemController', ($scope) => {
