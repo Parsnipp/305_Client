@@ -13,7 +13,7 @@ recipeApp.config( ['$routeProvider', ($routeProvider) => {
   		templateUrl: 'templates/getAll.html',
   		controller: 'getAllController'
   	})
-  	.when('/getItem', {
+  	.when('/getItem/:id', {
   		templateUrl: 'templates/getItem.html',
   		controller: 'getItemController'
   	})
@@ -70,8 +70,18 @@ recipeApp.controller('getAllController', ($scope, $http) => {
     });
 });
 
-recipeApp.controller('getItemController', ($scope) => {
-
+recipeApp.controller('getItemController', ($scope, $http, $routeParams) => {
+  const url = 'http://localhost:8080/recipes/'+$routeParams.id;
+  console.log(url);
+  $http({
+    method: 'GET',
+    url: url
+  }).then(function successCallback(response) {
+      var json = JSON.parse(response.data.data);
+      $scope.recipe = json[0];
+    }, function errorCallback(response) {
+      console.log(response);
+    });
 });
 
 recipeApp.controller('getRemoteItemController', ($scope) => {
