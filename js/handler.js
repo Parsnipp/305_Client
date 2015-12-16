@@ -28,7 +28,7 @@ recipeApp.config( ['$routeProvider', function($routeProvider) {
 			templateUrl: 'templates/post.html',
 			controller: 'postController'
 		})
-		.when('/put', {
+		.when('/put/:id', {
 			templateUrl: 'templates/put.html',
 			controller: 'putController'
 		})
@@ -93,15 +93,14 @@ recipeApp.controller('getItemController', function($scope, $http, $routeParams) 
   }).then(function successCallback(response) {
       var json = JSON.parse(response.data.data);
       $scope.recipe = json[0];
+    console.log($scope.recipe._id);
     }, function errorCallback(response) {
       console.log(response);
     });
 });
 
 recipeApp.controller('getRemoteItemController', function($scope, $http, $routeParams) {
-  console.log($routeParams);
   const url = 'http://localhost:8080/recipes/remote/'+$routeParams.id;
-  console.log(url);
   $http({
     method: 'GET',
     url: url
@@ -130,7 +129,6 @@ recipeApp.controller('postController', function($scope, $http) {
   var ingredients = [];
   $scope.add = function() {
     ingredients.push($scope.recipe.ingredients);
-    $scope.ingredients = ingredients;
     $scope.recipe.ingredients = null;
   };
   
@@ -159,8 +157,57 @@ recipeApp.controller('postController', function($scope, $http) {
   };
 });
 
-recipeApp.controller('putController', function($scope) {
-
+recipeApp.controller('putController', function($scope, $http, $routeParams) {
+  const url = 'http://localhost:8080/recipes/'+$routeParams.id;
+  console.log(url);
+  var ingredients;
+  $http({
+    method: 'GET',
+    url: url
+  }).then(function successCallback(response) {
+      var json = JSON.parse(response.data.data);
+      $scope.recipe = json[0];
+      ingredients = $scope.recipe.ingredients;
+      $scope.ingredients = ingredients;
+    }, function errorCallback(response) {
+      console.log(response);
+    });
+  
+  $scope.remove = function($event, ingredient) {
+    console.log(ingredients);
+    var index = ingredients.indexOf(ingredient);
+    ingredients.splice(index, 1);
+    console.log(ingredients);
+  };
+  
+  $scope.add = function() {
+    ingredients.push($scope.recipe.newIngredients);
+    $scope.recipe.newIngredients = null;
+  };
+  
+  $scope.submit = function() {
+    const url = 'http://localhost:8080/recipes/'+$routeParams.id;
+    const json = {"name": $scope.recipe.name, "ingredients": $scope.ingredients, "directions": $scope.recipe.directions};
+    const stringJSON = JSON.stringify(json);
+    console.log(stringJSON);
+    const auth = 'Basic '+btoa('testuser:password');
+    $http({
+      method: 'PUT',
+      url: url,
+      headers: {'Authorization': auth, 'Content-Type': 'text'},
+      data: json
+    }).then(function successCallback(response) {
+      console.log(response);
+      $scope.message = 'Recipe updated';
+      $scope.recipe.name = null;
+      $scope.recipe.ingredients = null;
+      $scope.recipe.directions = null;
+      $scope.ingredients = null;
+    }, function errorCallback(response) {
+      console.log(response);
+      $scope.message = 'You must be logged in to update a recipe';
+    });
+  };
 });
 
 recipeApp.controller('removeController', function($scope) {

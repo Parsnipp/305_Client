@@ -1,7 +1,16 @@
-<h2>Update a Recipe</h2>
-<p>
-  <a href="#getItem">get</a></br>
-  <a href="#post">post</a></br>
-  <a href="#put">put</a></br>
-	<a href="#delete">delete</a>
-</p>
+<h2>Update {{recipe.name}}</h2>
+
+<form ng-submit="submit()" name="createForm">
+  <h6>Recipe Name:</h6>
+  <input type="text" ng-model="recipe.name" required>
+  <h6>Ingredients:</h6>
+  <ul>
+    <li ng-repeat="ingredient in ingredients" ng-click="remove($event, ingredient)">X {{ingredient}}</li>
+  </ul>
+  <input type="text" name="ingredients" ng-model="recipe.newIngredients">
+  <input type="button" value="Add" ng-click="add()" ng-disabled="ingredients.$invalid">
+  <h6>Cooking Instructions:</h6>
+  <textarea ng-model="recipe.directions" required></textarea>
+  <input type="submit" value="Submit" ng-disabled="recipe.name.$invalid" ng-disabled="recipe.directions.$invalid">
+  <p>{{message}}</p>
+</form>
