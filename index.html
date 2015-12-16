@@ -19,19 +19,19 @@
   	<script src="js/handler.js"></script> <!-- function handler -->
 	</head> <!-- end head -->
 
-  <body>
+  <body ng-app="recipeApp">
     <header>
       <h1><a href="#getAll">Recipe Book</a></h1> <!-- website name -->
 
-      <div>
-        <!-- login content will be displayed here -->
-      </div><!-- end account div -->
+      <nav>
+        <a href="#getAll">Home</a>
+        <a href="#search">Search</a>
+        <a href="#post">Create</a>
+      </nav>
     </header> <!-- end header -->
 
-		<div ng-app="recipeApp">
-      <div ng-view>
-        <!-- page content will be displayed here-->
-		 	</div><!-- end of page div -->
-		</div> <!-- end of app div -->
+    <div ng-view>
+      <!-- page content will be displayed here-->
+    </div><!-- end of page div -->
 	</body> <!-- end body -->
 </html><!-- end -->
