@@ -4,7 +4,9 @@
     'Access-Control-Allow-Origin': 'http://localhost:8080', 
 */
 
-const recipeApp = angular.module('recipeApp', ['ngRoute']);
+const recipeApp = angular.module('recipeApp', ['ngRoute', 'ngCookies']);
+var user;
+var loginTemplate = 'templates/login.html';
 
 recipeApp.config( ['$routeProvider', function($routeProvider) {
   $routeProvider
@@ -32,7 +34,7 @@ recipeApp.config( ['$routeProvider', function($routeProvider) {
 			templateUrl: 'templates/put.html',
 			controller: 'putController'
 		})
-		.when('/remove', {
+		.when('/remove/:id', {
 			templateUrl: 'templates/remove.html',
 			controller: 'removeController'
 		})
@@ -57,7 +59,8 @@ recipeApp.config( ['$routeProvider', function($routeProvider) {
 		});
 }]);
 
-recipeApp.controller('getAllController', function($scope, $http) {
+recipeApp.controller('getAllController', function($scope, $http, $cookies) {
+  console.log($cookies.getAll());
   $http({
     method: 'GET',
     url: 'http://localhost:8080/'
@@ -67,21 +70,6 @@ recipeApp.controller('getAllController', function($scope, $http) {
     }, function errorCallback(response) {
       console.log(response);
     });
-  
-  $scope.login = function() {
-    const url = 'http://localhost:8080/user';
-    const auth = 'Basic '+btoa('testuser:password');
-    console.log(auth);
-    $http({
-      method: 'GET',
-      url: url,
-      headers: {'Authorization': auth}
-    }).then(function successCallback(response) {
-        console.log(response);
-      }, function errorCallback(response) {
-        console.log(response);
-      });
-  }
 });
 
 recipeApp.controller('getItemController', function($scope, $http, $routeParams) {
@@ -93,7 +81,8 @@ recipeApp.controller('getItemController', function($scope, $http, $routeParams) 
   }).then(function successCallback(response) {
       var json = JSON.parse(response.data.data);
       $scope.recipe = json[0];
-    console.log($scope.recipe._id);
+      $scope.deleter = {_id: json[0]._id, name: json[0].name};
+      console.log($scope.deleter);
     }, function errorCallback(response) {
       console.log(response);
     });
@@ -127,8 +116,10 @@ recipeApp.controller('searchController', function($scope, $http) {
 
 recipeApp.controller('postController', function($scope, $http) {
   var ingredients = [];
+  
   $scope.add = function() {
     ingredients.push($scope.recipe.ingredients);
+    $scope.ingredients = ingredients;
     $scope.recipe.ingredients = null;
   };
   
@@ -137,11 +128,10 @@ recipeApp.controller('postController', function($scope, $http) {
     const json = {"name": $scope.recipe.name, "ingredients": $scope.ingredients, "directions": $scope.recipe.directions};
     const stringJSON = JSON.stringify(json);
     console.log(stringJSON);
-    const auth = 'Basic '+btoa('testuser:password');
     $http({
       method: 'POST',
       url: url,
-      headers: {'Authorization': auth, 'Content-Type': 'text'},
+      headers: {'Authorization': 'Basic '+user, 'Content-Type': 'text'},
       data: json
     }).then(function successCallback(response) {
       console.log(response);
@@ -189,12 +179,10 @@ recipeApp.controller('putController', function($scope, $http, $routeParams) {
     const url = 'http://localhost:8080/recipes/'+$routeParams.id;
     const json = {"name": $scope.recipe.name, "ingredients": $scope.ingredients, "directions": $scope.recipe.directions};
     const stringJSON = JSON.stringify(json);
-    console.log(stringJSON);
-    const auth = 'Basic '+btoa('testuser:password');
     $http({
       method: 'PUT',
       url: url,
-      headers: {'Authorization': auth, 'Content-Type': 'text'},
+      headers: {'Authorization': 'Basic '+user, 'Content-Type': 'text'},
       data: json
     }).then(function successCallback(response) {
       console.log(response);
@@ -210,22 +198,148 @@ recipeApp.controller('putController', function($scope, $http, $routeParams) {
   };
 });
 
-recipeApp.controller('removeController', function($scope) {
+recipeApp.controller('removeController', function($scope, $http, $location, $routeParams) {
+  $scope.recipe = JSON.parse($routeParams.id);
+  console.log($scope.recipe._id);
+  
+  $scope.remove = function() {
+    const url = 'http://localhost:8080/recipes/'+$scope.recipe._id;
+    $http({
+      method: 'DELETE',
+      url: url,
+      headers: {'Authorization': 'Basic '+user}
+    }).then(function successCallback(response) {
+      console.log(response);
+      $location.path('/')
+    }, function errorCallback(response) {
+      console.log(response);
+      $scope.message = 'You must be logged in to delete a recipe';
+    });
+  };
+  
+  $scope.keep = function() {
+    $location.path('/');
+  };
+});
 
+recipeApp.controller('loginController', function($scope, $http, $cookies) {
+  if ($cookies.get('authorization')) {
+    $scope.loginTemplate = {
+      path: 'templates/user.html'
+    };
+    
+    user = $cookies.get('authorization');
+    const account = atob(user).split(':');
+    $scope.username = account[0];
+  } else {
+    $scope.loginTemplate = {
+      path: 'templates/login.html'
+    };
+  };
+  
+  $scope.login = function() {
+    console.log($scope.login.username);   
+    const url = 'http://localhost:8080/user';
+    const auth = btoa($scope.login.username+':'+$scope.login.password);
+    $http({
+      method: 'GET',
+      url: url,
+      headers: {'Authorization': 'Basic '+auth}
+    }).then(function successCallback(response) {
+        console.log(response);
+        user = auth;
+        $cookies.put('authorization', auth);
+        console.log($cookies.getAll());
+        $scope.loginTemplate.path = 'templates/user.html';
+        $scope.username = $scope.login.username;
+      }, function errorCallback(response) {
+        console.log(response);
+        $scope.error = 'Invalid username or password'
+      });
+  };
+  
+  $scope.logout = function() {
+    $cookies.remove('authorization');
+    user = null;
+    $scope.loginTemplate.path = 'templates/login.html';
+  };
 });
 
 recipeApp.controller('accountController', function($scope, $http) {
-
+  var account = atob(user).split(':');
+  console.log(account);
+  $scope.username = account[0];
 });
 
-recipeApp.controller('createAccountController', function($scope) {
-
+recipeApp.controller('createAccountController', function($scope, $http) {
+  $scope.submit = function() {
+    const url = 'http://localhost:8080/user';
+    const account = btoa($scope.account.username+':'+$scope.account.password);
+    $http({
+      method: 'POST',
+      url: url,
+      headers: {'Authorization': 'Basic '+account}
+    }).then(function successCallback(response) {
+      console.log(response);
+      $scope.message = 'Account: '+$scope.account.username+' created successfully'
+      $scope.account.username = null;
+      $scope.account.password = null;
+    }, function errorCallback(response) {
+      console.log(response);
+      $scope.message = 'Username already in use';
+    });
+  };
 });
 
-recipeApp.controller('updateAccountController', function($scope) {
-
+recipeApp.controller('updateAccountController', function($scope, $http) {
+  const logged = atob(user).split(':');
+  $scope.username = logged[0];
+  $scope.submit = function() {
+    const url = 'http://localhost:8080/user';
+    const account = btoa($scope.username+':'+$scope.account.password);
+    $http({
+        method: 'PUT',
+        url: url,
+        headers: {'Authorization': 'Basic '+account}
+      }).then(function successCallback(response) {
+        console.log(response);
+        $scope.message = 'Account: '+$scope.account.username+' password changed'
+        $scope.account.username = null;
+        $scope.account.password = null;
+      }, function errorCallback(response) {
+        console.log(response);
+        $scope.message = 'Failed to change password';
+      });
+  };
 });
 
-recipeApp.controller('removeAccountController', function($scope) {
-
+recipeApp.controller('removeAccountController', function($scope, $http, $location, $window, $cookies) {
+  if (!user) {
+    $location.path('/');
+  };
+  
+  const logged = atob(user).split(':');
+  $scope.username = logged[0];
+  
+  $scope.remove = function() {
+    const url = 'http://localhost:8080/user';
+    $http({
+      method: 'DELETE',
+      url: url,
+      headers: {'Authorization': 'Basic '+user}
+    }).then(function successCallback(response) {
+      console.log(response);
+      $cookies.remove('authorization');
+      user = null;
+      $location.path('/');
+      $window.location.reload();
+    }, function errorCallback(response) {
+      console.log(response);
+      $scope.message = 'Failed to delete account';
+    });
+  };
+  
+  $scope.keep = function() {
+    $location.path('/');
+  };
 });

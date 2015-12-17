@@ -16,13 +16,18 @@
 		<!-- import javascript -->
 		<script src="js/angular.js"></script> <!-- angular -->
 		<script src="js/angular-route.js"></script> <!-- angular routing -->
+    <script src="js/angular-cookies.js"></script> <!-- angular cookies -->
   	<script src="js/handler.js"></script> <!-- function handler -->
 	</head> <!-- end head -->
 
   <body ng-app="recipeApp">
     <header>
       <h1><a href="#getAll">Recipe Book</a></h1> <!-- website name -->
-
+      
+      <div ng-controller="loginController" data-ng-include="loginTemplate.path">
+        <!-- login info will appear here -->
+      </div>
+      
       <nav>
         <a href="#getAll">Home</a>
         <a href="#search">Search</a>

@@ -1,7 +1,7 @@
-<h2>All Saved Recipes</h2>
-<p>
-  <a href="#getItem">get</a></br>
-  <a href="#post">post</a></br>
-  <a href="#put">put</a></br>
-	<a href="#delete">delete</a>
-</p>
+<h2>Update Account: {{username}}</h2>
+<form ng-submit="submit()" name="accountForm">
+  <h6>New Password:</h6>
+  <input type="text" ng-model="account.password" required>
+  <input type="submit" value="Submit" ng-model="account.username" ng-disabled="account.$invalid">
+</form>
+<p>{{message}}</p>

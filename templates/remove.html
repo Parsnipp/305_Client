@@ -1,7 +1,4 @@
-<h2>Delete a Recipe</h2>
-<p>
-  <a href="#getItem">get</a></br>
-  <a href="#post">post</a></br>
-  <a href="#put">put</a></br>
-	<a href="#delete">delete</a>
-</p>
+<h2>Delete: {{recipe.name}}</h2>
+<h3>Are you sure?</h3>
+<input type="button" value="Yes" ng-click="remove()">
+<input type="button" value="No" ng-click="keep()">
