@@ -1,8 +1,11 @@
 <h2>{{recipe.name}}</h2>
-
-<h4>Ingredients:</h4>
-<p>{{recipe.ingredients}}</p>
-<h4>Directions:</h4>
-<p>{{recipe.directions}}</p>
-<p><a href="#put/{{recipe._id}}">Update</a>
-<a href="#remove/{{deleter}}">Delete</a></p>
+<div id="item">
+  <h4 class="items">Ingredients:</h4>
+  <p class="items">{{recipe.ingredients}}</p>
+  
+  <h4 class="items">Directions:</h4>
+  <p class="items">{{recipe.directions}}</p>
+  
+  <p class="items"><a href="#put/{{recipe._id}}">Update</a>
+  <a href="#remove/{{deleter}}">Delete</a></p>
+</div>

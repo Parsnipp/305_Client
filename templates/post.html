@@ -1,14 +1,16 @@
 <h2>Create a Recipe</h2>
 
-<form ng-submit="submit()" name="createForm">
-  <h6>Recipe Name:</h6>
-  <input type="text" ng-model="recipe.name" required>
-  <h6>Ingredients:</h6>
-  <p>{{ingredients}}</p>
-  <input type="text" name="ingredients" ng-model="recipe.ingredients">
-  <input type="button" value="Add" ng-click="add()" ng-disabled="ingredients.$invalid">
-  <h6>Cooking Instructions:</h6>
-  <textarea ng-model="recipe.directions" required></textarea>
-  <input type="submit" value="Submit" ng-disabled="recipe.name.$invalid" ng-disabled="recipe.directions.$invalid">
-  <p>{{message}}</p>
+<form ng-submit="submit()" name="createForm" class="recipe-form">
+  <h6 class="form-item">Recipe Name:</h6>
+  <input type="text" ng-model="recipe.name" required class="form-item">
+  
+  <h6 class="form-item">Ingredients:</h6>
+  <p class="form-item">{{ingredients}}</p>
+  <input type="text" name="ingredients" ng-model="recipe.ingredients" class="form-item">
+  <input type="button" value="Add" ng-click="add()" ng-disabled="ingredients.$invalid" class="form-item">
+  
+  <h6 class="form-item">Cooking Instructions:</h6>
+  <textarea ng-model="recipe.directions" required  class="form-item"></textarea>
+  <input type="submit" value="Submit" ng-disabled="recipe.name.$invalid" ng-disabled="recipe.directions.$invalid"  class="form-item" class="submit">
+  <p class="form-item">{{message}}</p>
 </form>

@@ -1,3 +1,159 @@
-body {
-	padding: 10px;
+* {
+	padding: 0px;
+  margin: 0px;
+}
+
+.clearfix {
+  clear: both;
+}
+
+header {
+  background: orange;
+}
+
+#login-info {
+  height: 90px;
+  float: right;
+  position: relative;
+  right: 30px;
+  bottom: 20px;
+}
+
+#navbar {
+  height: 40px;
+  margin-top: 90px;
+  background: #222;
+  width: fill;
+  z-index: 200;
+}
+
+.nav-move {
+  position: absolute;
+  top: 210px;
+  width: 100%;
+}
+
+.nav-fixed {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+nav {
+  width: 450px;
+  margin: auto;
+}
+
+.nav-item {
+  display: inline-block;
+  padding: 10px 0 10px;
+  width: 140px;
+  color: #CF7C00;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  border-top: solid;
+  border-color: transparent;
+  height: 20px;
+}
+
+.nav-item:hover {
+  border-top: solid;
+  border-color: #CF7C00;
+  color: white;
+}
+
+.nav-item:active {
+  background: #822;
+}
+
+h1 {
+  position: relative;
+  top: 30px;
+  left: 20px;
+}
+
+#header-link {
+  color: black;
+  text-decoration: none;
+  font-size: 50px;
+}
+
+.logged-in-info {
+  text-align: right;
+  margin: 2px;
+}
+
+#logout-button {
+  float: right;
+  font-size: 10px;
+}
+
+#settings-link {
+  font-size: 10px;
+}
+
+#login-box {
+  position: relative;
+  bottom: 20px;
+  left: 10px;
+}
+
+#create-account {
+  font-size: 10px;
+}
+
+#login-password {
+  margin-top: 5px;
+}
+
+h2 {
+  margin: 20px;
+  text-transform: capitalize;
+}
+
+#main-content {
+  background: #fafafa;
+}
+
+table, #item, .recipe-form, #delete-content {
+  margin: 20px;
+}
+
+#name-column {
+  text-transform: capitalize;
+}
+
+.items, .form-item {
+  margin-top: 10px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+#search-bar, .account-page {
+  margin-left: 20px;
+}
+
+.del-button {
+  margin: 10px;
+}
+
+textarea {
+  width: 200px;
+  height: 100px;
+  display: block;
+}
+
+.submit {
+  display: block;
+}
+
+#create-password, #account-submit {
+  margin-top: 10px
+}
+
+.submit-block {
+  display: block;
 }

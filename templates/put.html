@@ -1,16 +1,18 @@
 <h2>Update {{recipe.name}}</h2>
 
-<form ng-submit="submit()" name="createForm">
-  <h6>Recipe Name:</h6>
-  <input type="text" ng-model="recipe.name" required>
-  <h6>Ingredients:</h6>
-  <ul>
-    <li ng-repeat="ingredient in ingredients" ng-click="remove($event, ingredient)">X {{ingredient}}</li>
+<form ng-submit="submit()" name="createForm" class="recipe-form">
+  <h6 class="form-item">Recipe Name:</h6>
+  <input type="text" ng-model="recipe.name" required class="form-item">
+  
+  <h6 class="form-item">Ingredients:</h6>
+  <ul class="form-item">
+    <li ng-repeat="ingredient in ingredients" ng-click="remove($event, ingredient)" id="list-item">X {{ingredient}}</li>
   </ul>
-  <input type="text" name="ingredients" ng-model="recipe.newIngredients">
-  <input type="button" value="Add" ng-click="add()" ng-disabled="ingredients.$invalid">
-  <h6>Cooking Instructions:</h6>
-  <textarea ng-model="recipe.directions" required></textarea>
-  <input type="submit" value="Submit" ng-disabled="recipe.name.$invalid" ng-disabled="recipe.directions.$invalid">
-  <p>{{message}}</p>
+  <input type="text" name="ingredients" ng-model="recipe.newIngredients" class="form-item">
+  <input type="button" value="Add" ng-click="add()" ng-disabled="ingredients.$invalid" class="form-item">
+  
+  <h6 class="form-item">Cooking Instructions:</h6>
+  <textarea ng-model="recipe.directions" required class="form-item"></textarea>
+  <input type="submit" value="Submit" ng-disabled="recipe.name.$invalid" ng-disabled="recipe.directions.$invalid" class="form-item" class="submit">
+  <p class="form-item">{{message}}</p>
 </form>

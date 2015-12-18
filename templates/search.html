@@ -1,10 +1,10 @@
 <h2>Search</h2>
 
-<input type="text" name="name" ng-model="search.term" required>
+<input type="text" name="name" ng-model="search.term" required id="search-bar">
 <input type="button" value="Search" ng-click="search()" ng-disabled="search.term.$invalid">
 
 <table>
   <tr ng-repeat="recipe in recipes">
-    <td>{{recipe.name}}</td><td>{{recipe.ingredients}}</td><td><a href="#getRemoteItem/{{recipe.id}}">view</a></td>
+    <td class="name-column">{{recipe.name}}</td><td class="ingredients-column">{{recipe.ingredients}}</td><td><a href="#getRemoteItem/{{recipe.id}}">View</a></td>
   </tr>
 </table>

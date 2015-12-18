@@ -1,3 +1,5 @@
-<p>Logged in as: {{username}}</p>
-<p><a href="#account">Account Settings</a></p>
-<input type="button" value="Logout" ng-click="logout()">
+<div id="user-info">
+  <p id="logged-in-user" class="logged-in-info">Logged in as: {{username}}</p>
+  <p class="logged-in-info"><a href="#account" id="settings-link" class="logged-in-info">Account Settings</a></p>
+  <input type="button" value="Logout" ng-click="logout()" id="logout-button" class="logged-in-info">
+</div>

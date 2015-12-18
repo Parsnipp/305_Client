@@ -1,7 +1,12 @@
-<p>{{error}}</p>
-<h6>Username:</h6>
-<input type="text" ng-model="login.username">
-<h6>Password:</h6>
-<input type="text" ng-model="login.password">
-<input type="button" ng-click="login()" value="Login">
-<p><a href="#create_account">Create Account</a></p>
+<div id="login-box">
+  <p>{{error}}</p>
+  
+  <h6>Username:</h6>
+  <input type="text" ng-model="login.username">
+  
+  <h6 id="login-password">Password:</h6>
+  <input type="password" ng-model="login.password">
+  
+  <input type="button" ng-click="login()" value="Login">
+  <p><a href="#create_account" id="create-account">Create Account</a></p>
+</div>

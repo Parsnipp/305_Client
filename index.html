@@ -16,24 +16,45 @@
 		<script src="js/angular-route.js"></script> <!-- angular routing -->
     <script src="js/angular-cookies.js"></script> <!-- angular cookies -->
   	<script src="js/handler.js"></script> <!-- function handler -->
+    
+    <!-- Javascript to make the nav bar move when scrolled past the top of web page -->
+    <script type="text/javascript">
+      function window_onload() {
+        window.addEventListener("scroll",navbar_reset_top,false);
+      }
+      
+      var navbar_top=210;
+      
+      function navbar_reset_top() {
+        var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+        if(scrollTop>navbar_top&&navbar.className==="nav-move") {
+          document.getElementById("navbar").className="nav-fixed";
+        }
+        else if(scrollTop<navbar_top&&navbar.className==="nav-fixed") {
+          document.getElementById("navbar").className="nav-move";
+        }
+      }
+    </script>
 	</head> <!-- end head -->
 
-  <body ng-app="recipeApp">
+  <body ng-app="recipeApp" onload="javascript:window_onload();" bgcolor="#fafafa">
     <header>
-      <h1><a href="#getAll">Recipe Book</a></h1> <!-- website name -->
+      <h1><a href="#getAll" id="header-link">Recipe Book</a></h1> <!-- website name -->
       
-      <div ng-controller="loginController" data-ng-include="loginTemplate.path">
+      <div ng-controller="loginController" data-ng-include="loginTemplate.path" id="login-info">
         <!-- login info will appear here -->
-      </div>
+      </div> <!-- end login view -->
       
-      <nav>
-        <a href="#getAll">Home</a>
-        <a href="#search">Search</a>
-        <a href="#post">Create</a>
-      </nav>
+      <div id="navbar">
+        <nav class="clearfix">
+          <a href="#getAll" class="nav-item">Home</a>
+          <a href="#search" class="nav-item">Search</a>
+          <a href="#post" class="nav-item">Create</a>
+        </nav> <!-- end nav -->
+      </div> <!-- end navbar div -->
     </header> <!-- end header -->
 
-    <div ng-view>
+    <div ng-view id="main-content">
       <!-- page content will be displayed here-->
     </div><!-- end of page div -->
 	</body> <!-- end body -->

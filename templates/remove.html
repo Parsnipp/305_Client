@@ -1,4 +1,6 @@
 <h2>Delete: {{recipe.name}}</h2>
-<h3>Are you sure?</h3>
-<input type="button" value="Yes" ng-click="remove()">
-<input type="button" value="No" ng-click="keep()">
+<div id="delete-content">
+  <h3>Are you sure?</h3>
+  <input type="button" value="Yes" ng-click="remove()" class="del-button">
+  <input type="button" value="No" ng-click="keep()" class="del-button">
+</div>
