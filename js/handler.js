@@ -156,6 +156,7 @@ recipeApp.controller('postController', function($scope, $http) {
       $scope.recipe.name = null;
       $scope.recipe.ingredients = null;
       $scope.recipe.directions = null;
+      ingredients = [];
       $scope.ingredients = null;
     }, function errorCallback(response) {
       //if unsuccessful log error and update page to reflect
@@ -358,12 +359,12 @@ recipeApp.controller('updateAccountController', function($scope, $cookies, $http
         headers: {'Authorization': 'Basic '+account}
       }).then(function successCallback(response) {
         //if successful update page
-        $scope.message = 'Account: '+$scope.account.username+' password changed'
+        $scope.message = 'Account: '+$scope.username+' password changed'
         $scope.account.username = null;
         $scope.account.password = null;
         //change logged in credentials
         var newCredentials = atob(user).split(':');
-        user = btoa(account[0]+':'+$scope.account.password));
+        user = btoa(account[0]+':'+$scope.account.password);
         $cookies.remove('authorization');
         $cookies.put('authorization', user);
       }, function errorCallback(response) {
